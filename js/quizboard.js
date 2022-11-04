@@ -1,25 +1,33 @@
-$(document).ready(function () {
-    const quizAnswers = document.querySelectorAll(".ouranswers");
-    const submitAnswer = document.querySelector("#submit_ans");
-    let marks = 0;
-    let total = 0;
-    quizAnswers.forEach(function (jibu) {
-        if (parseInt(jibu.value) > 0) { total += parseInt(jibu.value); }
-        else { total = total; }
-        // jibu.addEventListener("change", function (event) {
-        //     // marks += parseInt(event.target.value);
+const myAnswers = document.querySelectorAll(".ouranswers");
+const finishButton = document.querySelector("#finished")
+const scoreMessage = document.querySelector("#scoreboard");
+let total = 0;
+let score = 0;
+myAnswers.forEach(function (answer) {
+    total += parseInt(answer.value);
+})
+finishButton.addEventListener("click", function (e) {
+    myAnswers.forEach(function (answer) {
+        if (answer.checked) {
+            score += parseInt(answer.value);
+        }
 
-        //     //alert("Selected");
-        // });
-    });
-    submitAnswer.addEventListener("click", function (event) {
-        quizAnswers.forEach(function (jibu) {
-            if (jibu.checked) {
-                marks += parseInt(jibu.value);
-            }
-        })
-        let score = (marks / total) * 100;
-        alert("your score is " + score + "%");
+    })
+    let percentageScore = (score / total) * 100;
+    let comments = '';
+    if (percentageScore > 80) {
+        comments += "Excellent! You have scored " + percentageScore + "%";
+    }
+    else if (percentageScore >= 50 && percentageScore <= 80) {
+        comments += "Good! You have scored " + percentageScore + "%";
+    }
 
-    });
+    else {
+        comments += "Poor Donely! You have scored " + percentageScore + "%";
+    }
+
+    scoreMessage.innerHTML += comments;
+})
+$("#finished").click(function () {
+    $("#scoreblimp").removeClass("d-none");
 });
